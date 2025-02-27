@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydromorph Index</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="hydro-section">
+        <h2>Hydromorph Index</h2>
+
+        <!-- Midpoint Auto-Detected from Pyro -->
+        <p><strong>Midpoint Timeframe:</strong> <span id="midpoint-display">Auto</span></p>
+
+        <!-- Sniper Entry Toggle -->
+        <label for="sniper-entry">Sniper Entry Mode:</label>
+        <input type="checkbox" id="sniper-entry">
+
+        <!-- Multi-Timeframe Selection (Auto + Override) -->
+        <div id="timeframe-selection">
+            <p><strong>Additional Timeframes:</strong></p>
+            <label><input type="checkbox" id="ltf-toggle"> Include LTF</label>
+            <label><input type="checkbox" id="htf-toggle"> Include HTF</label>
+        </div>
+
+        <!-- Hydro Strength Output -->
+        <div id="hydro-output">
+            <h3>Hydro Score: <span id="hydro-score">--</span></h3>
+            <h3>Morphic Score: <span id="morphic-score">--</span></h3>
+            <p id="strength-rating">Strength Rating: --</p>
+        </div>
+
+        <!-- Calculate Button -->
+        <button onclick="calculateHydro()">🔥 Calculate Hydro 🔥</button>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #111;
+    color: white;
+    text-align: center;
+}
+
+#hydro-section {
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+    width: 50%;
+    margin: auto;
+}
+
+#hydro-output {
+    background: #333;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+function calculateHydro() {
+    let hydroScore = 0;
+    
+    // Get midpoint timeframe from Pyro (Placeholder for now)
+    let midpoint = "Auto-Detected"; 
+    document.getElementById("midpoint-display").innerText = midpoint;
+
+    // Check if Sniper Entry is active
+    let sniperMode = document.getElementById("sniper-entry").checked;
+    
+    // Set Weighting Based on Sniper Mode
+    let ltfWeight = sniperMode ? 0.45 : 0.2857;
+    let htfWeight = sniperMode ? 0.40 : 0.5714;
+
+    // Check if LTF & HTF are included
+    let includeLTF = document.getElementById("ltf-toggle").checked;
+    let includeHTF = document.getElementById("htf-toggle").checked;
+
+    // Assign Weights If Selected
+    if (includeLTF) hydroScore += 100 * ltfWeight; // Placeholder Calculation
+    if (includeHTF) hydroScore += 100 * htfWeight; // Placeholder Calculation
+
+    // Apply Hydro Weighting to Morphic Score
+    let pyroScore = 70; // Placeholder (Pull from Pyro Calculation)
+    let morphicScore = (pyroScore * 0.65) + (hydroScore * 0.35);
+
+    // Display Results
+    document.getElementById("hydro-score").innerText = hydroScore.toFixed(1);
+    document.getElementById("morphic-score").innerText = morphicScore.toFixed(1);
+
+    // Assign Strength Rating
+    let rating = morphicScore >= 90 ? "🔥 Ultra Strong"
+        : morphicScore >= 75 ? "✅ Strong"
+        : morphicScore >= 50 ? "⚠️ Moderate"
+        : morphicScore >= 30 ? "❓ Low"
+        : "🚫 Weak";
+
+    document.getElementById("strength-rating").innerText = `Strength Rating: ${rating}`;
+}
+
